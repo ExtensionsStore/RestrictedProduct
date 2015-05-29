@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Restricted product layout
+ *
+ * @category    Aydus
+ * @package     Aydus_RestrictedProduct
+ * @author      Aydus <davidt@aydus.com>
+ */
+-->
+<layout>
+
+	<catalog_product_view>
+		<reference name="alert.urls">
+			<block type="aydus_restrictedproduct/view_message" name="restrictedproduct.message"
+				template="aydus/restrictedproduct/message.phtml" />
+		</reference>
+	</catalog_product_view>
+	
+</layout>

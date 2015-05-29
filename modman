@@ -1,0 +1,4 @@
+app/code/community/Aydus/RestrictedProduct/                            app/code/community/Aydus/RestrictedProduct/
+app/design/frontend/base/default/layout/aydus/restrictedproduct.xml    app/design/frontend/base/default/layout/aydus/restrictedproduct.xml
+app/design/frontend/base/default/template/aydus/restrictedproduct/     app/design/frontend/base/default/template/aydus/restrictedproduct/ 
+app/etc/modules/Aydus_RestrictedProduct.xml                            app/etc/modules/Aydus_RestrictedProduct.xml

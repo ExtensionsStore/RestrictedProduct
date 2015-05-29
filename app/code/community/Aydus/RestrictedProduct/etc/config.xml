@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * RestrictedProduct config
+ *
+ * @category    Aydus
+ * @package     Aydus_RestrictedProduct
+ * @author      Aydus <davidt@aydus.com>
+ */
+-->
+<config>
+    <modules>
+        <Aydus_RestrictedProduct>
+            <version>1.0.0</version>
+        </Aydus_RestrictedProduct>
+    </modules>
+    <frontend>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <aydus_restrictedproduct>
+                        <class>aydus_restrictedproduct/observer</class>
+                        <method>showCartItemRestriction</method>
+                    </aydus_restrictedproduct>
+                </observers>
+            </core_block_abstract_to_html_after>
+			<controller_action_postdispatch_checkout_onepage_saveBilling>
+		        <observers>
+		            <aydus_restrictedproduct>
+		                <class>aydus_restrictedproduct/observer</class>
+		                <method>removeRestrictedItems</method>
+		            </aydus_restrictedproduct>
+		        </observers>
+			</controller_action_postdispatch_checkout_onepage_saveBilling>
+			<controller_action_postdispatch_checkout_onepage_saveShipping>
+		        <observers>
+		            <aydus_restrictedproduct>
+		                <class>aydus_restrictedproduct/observer</class>
+		                <method>removeRestrictedItems</method>
+		            </aydus_restrictedproduct>
+		        </observers>
+			</controller_action_postdispatch_checkout_onepage_saveShipping>            
+        </events>    
+        <layout>
+            <updates>
+                <restrictedproduct module="Aydus_RestrictedProduct">
+                    <file>aydus/restrictedproduct.xml</file>
+                </restrictedproduct>
+            </updates>
+        </layout>
+    </frontend>    
+    <global>   
+        <blocks>
+            <aydus_restrictedproduct>
+                <class>Aydus_RestrictedProduct_Block</class>
+            </aydus_restrictedproduct>
+        </blocks>
+    	<helpers>
+    		<aydus_restrictedproduct>
+	    		<class>Aydus_RestrictedProduct_Helper</class>
+    		</aydus_restrictedproduct>    		    	
+    		<restrictedproduct>
+	    		<class>Aydus_RestrictedProduct_Helper</class>
+    		</restrictedproduct>    		
+    	</helpers>
+    	<models>
+            <aydus_restrictedproduct>
+                <class>Aydus_RestrictedProduct_Model</class>
+            </aydus_restrictedproduct>    	
+    	</models>
+    </global>
+</config>
