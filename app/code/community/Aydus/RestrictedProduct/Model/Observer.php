@@ -13,7 +13,6 @@ class Aydus_RestrictedProduct_Model_Observer
 
     /**
      * 
-     * 
      * @see core_block_abstract_to_html_after
      * @param Varien_Event_Observer $observer
      */
@@ -45,66 +44,107 @@ class Aydus_RestrictedProduct_Model_Observer
     }
 
     /**
-     * On checkout, remove items that are restricted from shipping address
+     * Remove restricted items based on shipping region
      *
-     * @see controller_action_postdispatch_checkout_onepage_saveBilling | controller_action_postdispatch_checkout_onepage_saveShipping
-     * @param Varien_Event_Observer $observer
-     */    
-    public function removeRestrictedItems($observer)
+     * @return array
+     */
+    protected function _removeRestrictedItems()
     {
+        $removedItems = array();
+    
         $quote = Mage::getSingleton('checkout/session')->getQuote();
-        
+    
         $address = $quote->getShippingAddress();
-        
+    
         $region = $address->getRegion();
-        
+    
         $regionRestricted = Mage::helper('aydus_restrictedproduct/geoip')->regionIsRestricted($region);
-        
+    
         if ($regionRestricted){
-            
-            $removedItems = array();
+    
             $items = $quote->getAllItems();
-            
+    
             foreach($items as $item){
-                
+    
                 $product = $item->getProduct();
                 $productIsRestricted = Mage::getSingleton('aydus_restrictedproduct/restrictedproduct')->productIsRestricted($product);
-                
+    
                 if ($productIsRestricted){
-                
+    
                     $itemId = $item->getId();
                     $quote->removeItem($itemId);
                     $quote->save();
-                    
+    
                     $removedItems[] = $product->getName() .' ('.$product->getSku().')';
-                }                
-                
-            }
-            
-            if (count($removedItems)>0){
-                
-                $store = Mage::app()->getStore()->getId();
-                $message = Mage::getStoreConfig('catalog/restrictedproduct/checkout_message',$storeId);
-                
-                if (!$message){
-                    $message = 'The following products have been removed from your cart: ';
                 }
-                
-                $message .= implode(',', $removedItems);
-                
-                $event = $observer->getEvent();
-                $controller = $event->getControllerAction();
-                $response = $controller->getResponse();
-                
-                $result['error'] = true;
-                $result['message'] = $message;
-                $response->setBody(Mage::helper('core')->jsonEncode($result));                
+    
             }
-            
+    
         }
-        
+    
+        return $removedItems;
+    }
+    
+    /**
+     * On one page checkout, remove items that are restricted from shipping address
+     *
+     * @see controller_action_postdispatch_checkout_onepage_saveBilling | controller_action_postdispatch_checkout_onepage_saveShipping
+     * @param Varien_Event_Observer $observer
+     */
+    public function removeRestrictedItems($observer)
+    {
+        $removedItems = $this->_removeRestrictedItems();
+    
+        if (count($removedItems)>0){
+    
+            $storeId = Mage::app()->getStore()->getId();
+            $message = Mage::getStoreConfig('catalog/restrictedproduct/checkout_message',$storeId);
+    
+            if (!$message){
+                $message = 'The following products have been removed from your cart: ';
+            }
+    
+            $message .= implode(',', $removedItems);
+    
+            $event = $observer->getEvent();
+            $controller = $event->getControllerAction();
+            $response = $controller->getResponse();
+    
+            $result['error'] = true;
+            $result['message'] = $message;
+            $response->setBody(Mage::helper('core')->jsonEncode($result));
+        }
+    
         return $observer;
-        	
+         
+    }
+    
+    /**
+     * On paypal review, remove items that are restricted from shipping address
+     *
+     * @see controller_action_predispatch_paypaluk_express_review
+     * @param Varien_Event_Observer $observer
+     */
+    public function paypalRemoveRestrictedItems($observer)
+    {
+        $removedItems = $this->_removeRestrictedItems();
+    
+        if (count($removedItems)>0){
+    
+            $storeId = Mage::app()->getStore()->getId();
+            $message = Mage::getStoreConfig('catalog/restrictedproduct/checkout_message',$storeId);
+    
+            if (!$message){
+                $message = 'The following products have been removed from your cart: ';
+            }
+    
+            $message .= implode(',', $removedItems);
+    
+            $session = Mage::getSingleton('core/session');
+            $session->addError($message);
+        }
+    
+        return $observer;
     }
    
 }

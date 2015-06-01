@@ -61,7 +61,7 @@ class Aydus_RestrictedProduct_Helper_Geoip extends Mage_Core_Helper_Abstract
         if ($restrictedRegionConfig){
         
             $restrictedRegionIds = explode(',', $restrictedRegionConfig);
-            if (is_array($restrictedRegionIds) && count($restrictedRegionIds)>0 && $restrictedRegionIds[0]){
+            if (is_array($restrictedRegionIds) && count($restrictedRegionIds)>0){
         
                 foreach ($restrictedRegionIds as $restrictedRegionId){
         
@@ -85,9 +85,20 @@ class Aydus_RestrictedProduct_Helper_Geoip extends Mage_Core_Helper_Abstract
     
     public function userIsRestricted()
     {
+        if (!$this->_userIsRestricted){
+            
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            
+            $shippingAddress = $quote->getShippingAddress();
+            $region = $shippingAddress->getRegion();
+            
+            $this->_userIsRestricted = $this->regionIsRestricted($region);
+            
+        }
+        
         return $this->_userIsRestricted;
     }
-    
+        
     /**
      * Get user's geoip record
      *

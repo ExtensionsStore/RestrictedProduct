@@ -39,7 +39,23 @@
 		                <method>removeRestrictedItems</method>
 		            </aydus_restrictedproduct>
 		        </observers>
-			</controller_action_postdispatch_checkout_onepage_saveShipping>            
+			</controller_action_postdispatch_checkout_onepage_saveShipping>
+			<controller_action_predispatch_paypaluk_express_review>
+		        <observers>
+		            <aydus_restrictedproduct>
+		                <class>aydus_restrictedproduct/observer</class>
+		                <method>paypalRemoveRestrictedItems</method>
+		            </aydus_restrictedproduct>
+		        </observers>
+			</controller_action_predispatch_paypaluk_express_review> 			           			  
+			<controller_action_predispatch_paypal_express_review>
+		        <observers>
+		            <aydus_restrictedproduct>
+		                <class>aydus_restrictedproduct/observer</class>
+		                <method>paypalRemoveRestrictedItems</method>
+		            </aydus_restrictedproduct>
+		        </observers>
+			</controller_action_predispatch_paypal_express_review> 			           			  			
         </events>    
         <layout>
             <updates>

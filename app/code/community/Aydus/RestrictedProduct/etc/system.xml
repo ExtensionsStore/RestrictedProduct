@@ -84,7 +84,7 @@
 				            <show_in_default>1</show_in_default>
 				            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Alert message to appear on onepage checkout after restricted products are removed from cart.]]></comment>
+                            <comment><![CDATA[Alert message to appear on the Onepage Checkout after restricted products are removed from  the cart.]]></comment>
                         </checkout_message>                                                                                                                                                                
                     </fields>
                 </restrictedproduct>
