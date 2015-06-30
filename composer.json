@@ -1,0 +1,18 @@
+{
+    "name": "aydus/restrictedproduct",
+    "license": "GPL-3.0",
+    "type": "magento-module",
+    "description": "Restrict products from being shipped to specific regions.",
+    "homepage": "https://github.com/aydus/RestrictedProduct.git",
+    "require": {
+        "php": ">=5.3",
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "authors": [
+        {
+            "name": "David Tay",
+            "email": "davidt@aydus.com",
+            "role": "Author/Maintainer"
+        }
+    ]
+}
