@@ -51,7 +51,14 @@ class Aydus_RestrictedProduct_Model_Observer
     protected function _removeRestrictedItems()
     {
         $removedItems = array();
-    
+
+        $request = Mage::app()->getRequest();
+        $billing = $request->getParam('billing');
+        
+        if (isset($billing) && isset($billing['use_for_shipping']) && !$billing['use_for_shipping']){
+            return $removedItems;
+        }
+                
         $quote = Mage::getSingleton('checkout/session')->getQuote();
     
         $address = $quote->getShippingAddress();
